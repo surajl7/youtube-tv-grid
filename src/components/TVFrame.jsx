@@ -60,7 +60,7 @@ export default function TVFrame({
           {/* ── Guide (EPG rows) ── */}
           <div className={`guide-section ${isPlaying ? 'guide-section--off' : 'guide-section--on'}`}>
             <CategoryTabs categories={categories} activeCat={activeCat} onSelect={setActiveCat} />
-            <div className="epg-list">
+            <div className="channel-grid">
               {loadingVideo && !isPlaying ? (
                 <div className="no-channels">
                   <span className="no-channels-icon">▶</span>TUNING...

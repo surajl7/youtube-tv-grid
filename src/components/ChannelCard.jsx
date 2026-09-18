@@ -1,5 +1,8 @@
-function padCh(n) {
-  return String(n).padStart(2, '0')
+function fmtSubs(n) {
+  if (!n) return ''
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M'
+  if (n >= 1_000)     return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K'
+  return String(n)
 }
 
 export default function ChannelCard({ channel, selected, onClick }) {
@@ -7,30 +10,24 @@ export default function ChannelCard({ channel, selected, onClick }) {
 
   return (
     <div
-      className={`epg-row ${selected ? 'epg-row--selected' : ''}`}
+      className={`channel-card ${selected ? 'channel-card--selected' : ''}`}
       onClick={onClick}
       role="button"
       tabIndex={0}
       onKeyDown={e => e.key === 'Enter' && onClick()}
       aria-label={`Channel ${chNum}: ${name}`}
     >
-      <div className="epg-ch">
-        <span className="epg-ch-num">{padCh(chNum)}</span>
-      </div>
-      <div
-        className="epg-thumb"
-        style={!thumbnail ? { background: `linear-gradient(135deg, ${color}dd, ${color}88)` } : {}}
-      >
+      <div className="card-thumb">
         {thumbnail
           ? <img src={thumbnail} alt={name} />
-          : <span>{initials}</span>
+          : <div className="card-initials" style={{ background: `linear-gradient(135deg, ${color}dd, ${color}88)` }}>{initials}</div>
         }
+        <span className="card-ch-badge">CH {String(chNum).padStart(2, '0')}</span>
       </div>
-      <div className="epg-info">
-        <div className="epg-name">{name}</div>
-        {subs && <div className="epg-subs">{subs}</div>}
+      <div className="card-info">
+        <div className="card-name">{name}</div>
+        {subs && <div className="card-subs">{fmtSubs(subs)} subscribers</div>}
       </div>
-      {selected && <div className="epg-arrow">▶</div>}
     </div>
   )
 }
